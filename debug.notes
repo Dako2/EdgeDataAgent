@@ -1,0 +1,42 @@
+Error:
+Traceback (most recent call last):
+  File "/home/dako/Documents/GitHub/oyiyi/EdgeDataAgent/main/demo/rag.py", line 45, in <module>
+    main()
+  File "/home/dako/Documents/GitHub/oyiyi/EdgeDataAgent/main/demo/rag.py", line 29, in main
+    rag_system = RagSystem(data_dir)
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/home/dako/Documents/GitHub/oyiyi/EdgeDataAgent/main/demo/rag.py", line 15, in __init__
+    self.index = load_index_from_storage(self.storage_context)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dako/miniconda3/lib/python3.12/site-packages/llama_index/core/indices/loading.py", line 33, in load_index_from_storage
+    indices = load_indices_from_storage(storage_context, index_ids=index_ids, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dako/miniconda3/lib/python3.12/site-packages/llama_index/core/indices/loading.py", line 78, in load_indices_from_storage
+    index = index_cls(
+            ^^^^^^^^^^
+  File "/home/dako/miniconda3/lib/python3.12/site-packages/llama_index/core/indices/vector_store/base.py", line 72, in __init__
+    else Settings.embed_model
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/home/dako/miniconda3/lib/python3.12/site-packages/llama_index/core/settings.py", line 64, in embed_model
+    self._embed_model = resolve_embed_model("default")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dako/miniconda3/lib/python3.12/site-packages/llama_index/core/embeddings/utils.py", line 66, in resolve_embed_model
+    raise ValueError(
+ValueError: 
+******
+Could not load OpenAI embedding model. If you intended to use OpenAI, please check your OPENAI_API_KEY.
+Original error:
+No API key found for OpenAI.
+Please set either the OPENAI_API_KEY environment variable or openai.api_key prior to initialization.
+API keys can be found or created at https://platform.openai.com/account/api-keys
+
+Consider using embed_model='local'.
+Visit our documentation for more embedding options: https://docs.llamaindex.ai/en/stable/module_guides/models/embeddings.html#modules
+******
+
+Solution:
+# Initialize the Settings with specific components
+from llama_index.core import Settings
+from llama_index.core.llms import MockLLM
+Settings.llm = MockLLM()
+Settings.embed_model = HuggingFaceEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
